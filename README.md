@@ -33,7 +33,7 @@ Rather than functioning as a conventional chat application, the platform serves 
 
 # Features
 
-### 💬 Conversational Intelligence
+###  Conversational Intelligence
 
 - Real-Time Conversation Processing
 - Conversation Analytics
@@ -42,7 +42,7 @@ Rather than functioning as a conventional chat application, the platform serves 
 
 ---
 
-### 😊 Sentiment Analysis
+###  Sentiment Analysis
 
 Detects whether messages express
 
@@ -52,7 +52,7 @@ Detects whether messages express
 
 ---
 
-### 🎭 Emotion Detection
+###  Emotion Detection
 
 Identifies emotional states including
 
@@ -65,7 +65,7 @@ Identifies emotional states including
 
 ---
 
-### 🎯 Tone Detection
+###  Tone Detection
 
 Analyzes communication style
 
@@ -78,7 +78,7 @@ Analyzes communication style
 
 ---
 
-### 🚨 Toxicity Detection
+###  Toxicity Detection
 
 Automatically detects
 
@@ -90,7 +90,7 @@ Automatically detects
 
 ---
 
-### 📝 Conversation Summarization
+###  Conversation Summarization
 
 Generate concise summaries of
 
@@ -101,13 +101,13 @@ Generate concise summaries of
 
 ---
 
-### 🤖 AI Smart Reply
+###  AI Smart Reply
 
 Suggests context-aware replies using modern NLP models.
 
 ---
 
-### 📊 Conversation Insights Dashboard
+###  Conversation Insights Dashboard
 
 Visualizes
 
