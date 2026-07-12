@@ -7,6 +7,8 @@ import userRouter from "./routes/userRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
 import { Server } from "socket.io";
 
+import cloudinary from "./lib/cloudinary.js";
+
 //creating express app using http server
 const app = express();
 const server = http.createServer(app)
@@ -51,3 +53,17 @@ await connectDB();
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, ()=>console.log("Server is running on PORT: "+PORT));
+
+//test for cloudinary
+app.get("/test-cloudinary", async (req, res) => {
+    try {
+        const result = await cloudinary.uploader.upload(
+            "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+        );
+
+        res.json(result);
+    } catch (err) {
+        console.log(JSON.stringify(err, null, 2));
+        res.json(err);
+    }
+});
