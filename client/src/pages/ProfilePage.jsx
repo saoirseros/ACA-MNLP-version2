@@ -20,10 +20,10 @@ const ProfilePage = () => {
       return;
     }
 
-    const render = new FileRender();
-    ReadableStream.readAsDataURL(selectedImg);
-    render.onload = async ()=>{
-      const base64Image = render.result;
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedImg);
+    reader.onload = async ()=>{
+      const base64Image = reader.result;
       await updateProfile({profilePic: base64Image, fullName: name, bio})
       navigate('/');
     }
@@ -46,7 +46,7 @@ const ProfilePage = () => {
 
            <button type='submit' className='bg-gradient-to-r from-purple-400 to-violet-600 text-white p-2 rounded-full text-lg cursor-pointer'>Save</button>
         </form>
-        <img className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 ${selectedImg && 'rounded-full'}`}src={assets.logo_icon} alt="" />
+        <img className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 ${selectedImg && 'rounded-full'}`} src={assets.logo_icon} alt="" />
       </div>
 
     </div>
