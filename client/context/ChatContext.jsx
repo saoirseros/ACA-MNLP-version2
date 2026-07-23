@@ -57,7 +57,26 @@ export const ChatProvider = ({ children })=>{
         }
     }
 
-    
+    //function to subscribe to messages for selcted user - meaning we'll get the new msgs in real time instantly
+
+    const subscribeToMessages = async ()=>{
+        if(!socket) return;
+
+        socket.on("newMessage", (newMessage)=>{
+            if(selectedUser && newMessage.senderId === selectedUser._id){
+                newMessage.seen = true;
+                setMessages((prevMessages)=> [...prevMessages, newMessage]);
+
+                axios.put(`/api/messages/mark/${newMessage._id}`);
+            }else{
+                setUnseenMessages((prevUnseenMessages)=>({
+                    ...prevUnseenMessages, [newMessage.senderId] : prevUnseenMessages[newMessage.senderId] ? prevUnseenMessages[newMessage.senderId] + 1 : 1
+                }))
+            }
+        })
+    }
+
+
     const value = {
         
     }
