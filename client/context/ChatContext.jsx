@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { AuthContext } from "./AuthContext";
@@ -75,6 +75,16 @@ export const ChatProvider = ({ children })=>{
             }
         })
     }
+
+    //function to unsubscribe
+    const unsubscribeFromMessages = ()=>{
+        if(socket) socket.off("newMessage");
+    }
+
+    useEffect(()=>{
+        subscribeToMessages();
+        return ()=> unsubscribeFromMessages();
+    }, [socket, selectedUser])
 
 
     const value = {
