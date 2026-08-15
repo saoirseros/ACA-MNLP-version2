@@ -3,9 +3,9 @@
 @import "tailwindcss";
 
 *{
-    font-family: "Outfit", sans-serif;
+  font-family: "Outfit", sans-serif;
 }
 
 ::-webkit-scrollbar{
-    display: none;
+  display: none;
 }
