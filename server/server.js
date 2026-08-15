@@ -7,28 +7,26 @@ import userRouter from "./routes/userRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
 import { Server } from "socket.io";
 
-import cloudinary from "./lib/cloudinary.js";
-
-//creating express app using http server
+// Create Express app and HTTP server
 const app = express();
 const server = http.createServer(app)
 
-//initializing socket.io server
+// Initialize socket.io server
 export const io = new Server(server, {
     cors: {origin: "*"}
 })
 
-//store online users
-export const userSocketMap = {}; //{userId: socketId}
+// Store online users
+export const userSocketMap = {}; // { userId: socketId }
 
-//socket.io connection handler
+// Socket.io connection handler
 io.on("connection", (socket)=>{
     const userId = socket.handshake.query.userId;
     console.log("User Connected", userId);
 
     if(userId) userSocketMap[userId] = socket.id;
-
-    //emit online users to all connected client
+    
+    // Emit online users to all connected clients
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
     socket.on("disconnect", ()=>{
@@ -38,32 +36,24 @@ io.on("connection", (socket)=>{
     })
 })
 
-//middleware setup
-app.use(express.json({limit:"4mb"}));
+// Middleware setup
+app.use(express.json({limit: "4mb"}));
 app.use(cors());
 
 
-//Routes setup
-app.use("/api/status", (req,res)=> res.send("Server is live"));
+// Routes setup
+app.use("/api/status", (req, res)=> res.send("Server is live"));
 app.use("/api/auth", userRouter);
 app.use("/api/messages", messageRouter)
 
-//Connect to mongodb
+
+// Connect to MongoDB
 await connectDB();
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, ()=>console.log("Server is running on PORT: "+PORT));
+if(process.env.NODE_ENV !== "production"){
+    const PORT = process.env.PORT || 5000;
+    server.listen(PORT, ()=> console.log("Server is running on PORT: " + PORT));
+}
 
-//test for cloudinary
-app.get("/test-cloudinary", async (req, res) => {
-    try {
-        const result = await cloudinary.uploader.upload(
-            "https://res.cloudinary.com/demo/image/upload/sample.jpg"
-        );
-
-        res.json(result);
-    } catch (err) {
-        console.log(JSON.stringify(err, null, 2));
-        res.json(err);
-    }
-});
+// Export server for Vervel
+export default server;
