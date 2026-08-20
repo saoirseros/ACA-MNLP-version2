@@ -31,6 +31,37 @@ Rather than functioning as a conventional chat application, the platform serves 
 
 ---
 
+# Getting Started
+
+The application has four local processes: MongoDB, the Node/Express server,
+the Python NLP service, and the Vite client. Start them in that order.
+
+```powershell
+# 1. Start MongoDB (if it is not already running)
+mongod
+
+# 2. Start the backend
+cd server
+copy .env.example .env
+npm run server
+
+# 3. Start the NLP service in a second terminal
+cd nlp-service
+$env:PYTHONPATH = "."
+C:\nlp-venvs\ptp-nlp-service\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+
+# 4. Start the client in a third terminal
+cd client
+copy .env.example .env
+npm run dev
+```
+
+The Python environment is kept at `C:\nlp-venvs\ptp-nlp-service` to avoid
+Windows long-path installation errors under OneDrive. Leave `NLP_SERVICE_URL`
+unset in `server/.env` if chat should run without optional NLP analysis.
+
+---
+
 # Features
 
 ###  Conversational Intelligence
@@ -207,7 +238,7 @@ These models are comparatively evaluated to determine their effectiveness for co
 
 # 📊 Evaluation Metrics
 
-The performance of the system will be evaluated using
+The performance of the implemented modules is evaluated using
 
 - Accuracy
 - Precision
@@ -248,27 +279,38 @@ This project proposes a unified architecture capable of integrating multiple NLP
 ```text
 ├── client/
 │   ├── src/
-│   ├── components/
-│   ├── pages/
-│   └── assets/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── assets/
 │
 ├── server/
 │   ├── routes/
 │   ├── controllers/
 │   ├── middleware/
 │   ├── models/
-│   └── config/
+│   ├── services/        # NLP service client + async message analysis pipeline
+│   └── lib/
 │
-├── ml/
-│   ├── sentiment/
-│   ├── toxicity/
-│   ├── summarization/
-│   ├── emotion/
-│   └── models/
+├── nlp-service/          # Python/FastAPI multi-module NLP engine
+│   └── app/
+│       ├── api/           # /health, /analyze/* routes
+│       ├── context/        # Adaptive Context Activation (Phase 6)
+│       ├── models/          # sentiment/ emotion/ toxicity/ summarization/ topic/
+│       ├── preprocessing/
+│       ├── inference/
+│       ├── evaluation/
+│       └── schemas/
 │
-├── datasets/
+├── training/             # Fine-tuning pipeline scaffold (Phase 9, not yet executed)
+│   ├── shared/            # shared Trainer-based fine-tuning utility
+│   ├── sentiment/ emotion/ toxicity/   # one train.py per task
 │
-├── research/
+├── experiments/           # Reproducible experiment framework + real results (Phase 9)
+│   ├── common/             # dataset-agnostic metrics + charting
+│   ├── datasets_loader.py, baselines.py, transformer_eval.py, context_experiment.py, run_all.py
+│   ├── results/             # generated JSON + PNG output from the last run
+│   ├── README.md            # how to reproduce
+│   └── FINDINGS.md          # research-paper-style write-up of results
 │
 └── README.md
 ```
@@ -292,9 +334,21 @@ This project proposes a unified architecture capable of integrating multiple NLP
 
 # Current Status
 
-> 🚧 Active Development
+> ✅ Phase 11 complete; future enhancements remain planned
 
 This repository is being developed as part of a Final Year Engineering Project focused on Conversational AI, Natural Language Processing, and Machine Learning.
+
+**Implementation progress** (see [nlp-service/README.md](nlp-service/README.md) for full detail):
+
+- ✅ Phase 1-2: Existing MERN chat audited and stabilized
+- ✅ Phase 3: Python FastAPI NLP service scaffolded
+- ✅ Phase 4: First end-to-end pipeline (sentiment) proven Node → Python → model → Node → React
+- ✅ Phase 5: Emotion, toxicity, summarization, and topic extraction modules added
+- ✅ Phase 6: Adaptive Context Activation (ACA) algorithm implemented and verified against the spec's canonical examples
+- ✅ Phase 7: ACA wired into the live per-message pipeline - real chat messages now get context-aware analysis
+- ✅ Phase 8: Conversation-level intelligence dashboard (`GET /api/messages/analytics/:id`) - sentiment progression, dominant emotion, toxicity frequency, topic, live summary, context usage stats, and a data-driven sentiment-trend insight
+- ✅ Phase 9: Experiment/training/evaluation framework - see [experiments/FINDINGS.md](experiments/FINDINGS.md) for full results. Real, reproducible metrics generated from public datasets: TF-IDF+LogReg baseline vs pretrained Transformer for sentiment/emotion/toxicity, and a full-context vs Adaptive Context Activation comparison on real dialogue data. A fine-tuning pipeline scaffold ([training/](training)) is built and import-verified but not executed (CPU-only fine-tuning deferred, per spec)
+- ✅ Phase 10-11: Performance/usability optimization, automated smoke tests, and documentation polish
 
 ---
 

@@ -5,7 +5,7 @@ import { AuthContext } from '../../context/AuthContext'
 
 const RightSidebar = () => {
 
-    const {selectedUser, messages} = useContext(ChatContext)
+    const {selectedUser, messages, conversationAnalytics} = useContext(ChatContext)
     const {logout, onlineUsers} = useContext(AuthContext)
     const [msgImages, setMsgImages] = useState([])
 
@@ -41,6 +41,56 @@ const RightSidebar = () => {
                 ))}
             </div>
         </div>
+
+        {conversationAnalytics && conversationAnalytics.messagesAnalyzed > 0 && (
+            <>
+                <hr className="border-[#ffffff50] my-4"/>
+                <div className="px-5 text-xs pb-24">
+                    <p className='font-medium mb-2'>Conversation Intelligence</p>
+
+                    <div className='grid grid-cols-2 gap-y-2 gap-x-2 opacity-90'>
+                        <span className='text-gray-400'>Overall sentiment</span>
+                        <span className='capitalize'>{conversationAnalytics.sentiment.overall || '-'}</span>
+
+                        <span className='text-gray-400'>Dominant emotion</span>
+                        <span className='capitalize'>{conversationAnalytics.emotion.dominant || '-'}</span>
+
+                        <span className='text-gray-400'>Toxic messages</span>
+                        <span>{conversationAnalytics.toxicity.toxicMessageCount}</span>
+
+                        <span className='text-gray-400'>Dominant topic</span>
+                        <span className='capitalize'>{conversationAnalytics.topic?.label || 'n/a'}</span>
+
+                        <span className='text-gray-400'>Messages analyzed</span>
+                        <span>{conversationAnalytics.messagesAnalyzed}</span>
+                    </div>
+
+                    {conversationAnalytics.summary?.text && (
+                        <div className='mt-3'>
+                            <p className='text-gray-400 mb-1'>Summary</p>
+                            <p className='opacity-90'>{conversationAnalytics.summary.text}</p>
+                        </div>
+                    )}
+
+                    <div className='mt-3'>
+                        <p className='text-gray-400 mb-1'>Insight</p>
+                        <p className='opacity-90'>{conversationAnalytics.insight}</p>
+                    </div>
+
+                    <div className='mt-3'>
+                        <p className='text-gray-400 mb-1'>Context processing</p>
+                        <p className='opacity-90'>
+                            Low: {conversationAnalytics.context.levelCounts.low} · Medium: {conversationAnalytics.context.levelCounts.medium} · High: {conversationAnalytics.context.levelCounts.high}
+                        </p>
+                        {conversationAnalytics.processing.averageTotalLatencyMs != null && (
+                            <p className='opacity-90'>
+                                Avg. inference latency: {Math.round(conversationAnalytics.processing.averageTotalLatencyMs)}ms
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </>
+        )}
 
         <button onClick={()=> logout()} className='absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-400 to-violet-600 text-white border-none text-sm font-light py-2 px-20 rounded-full cursor-pointer'>
             Logout

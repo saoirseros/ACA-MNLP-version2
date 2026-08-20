@@ -1,0 +1,312 @@
+{
+  "task": "emotion",
+  "n_train": 3000,
+  "n_test": 300,
+  "labels": [
+    "anger",
+    "disgust",
+    "fear",
+    "joy",
+    "neutral",
+    "sadness",
+    "surprise"
+  ],
+  "baseline": {
+    "metrics": {
+      "n_samples": 300,
+      "labels": [
+        "anger",
+        "disgust",
+        "fear",
+        "joy",
+        "neutral",
+        "sadness",
+        "surprise"
+      ],
+      "accuracy": 0.6733333333333333,
+      "precision_macro": 0.43762085867349027,
+      "recall_macro": 0.3314025430960915,
+      "f1_macro": 0.33907097037004924,
+      "f1_weighted": 0.6341687933992083,
+      "classification_report": {
+        "anger": {
+          "precision": 0.8947368421052632,
+          "recall": 0.3541666666666667,
+          "f1-score": 0.5074626865671642,
+          "support": 48.0
+        },
+        "disgust": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "fear": {
+          "precision": 0.8461538461538461,
+          "recall": 0.25,
+          "f1-score": 0.38596491228070173,
+          "support": 44.0
+        },
+        "joy": {
+          "precision": 0.6153846153846154,
+          "recall": 0.9629629629629629,
+          "f1-score": 0.7509025270758123,
+          "support": 108.0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "sadness": {
+          "precision": 0.7070707070707071,
+          "recall": 0.7526881720430108,
+          "f1-score": 0.7291666666666666,
+          "support": 93.0
+        },
+        "surprise": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 7.0
+        },
+        "accuracy": 0.6733333333333333,
+        "macro avg": {
+          "precision": 0.43762085867349027,
+          "recall": 0.3314025430960915,
+          "f1-score": 0.33907097037004924,
+          "support": 300.0
+        },
+        "weighted avg": {
+          "precision": 0.7079908395697869,
+          "recall": 0.6733333333333333,
+          "f1-score": 0.6341687933992083,
+          "support": 300.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          17,
+          0,
+          1,
+          16,
+          0,
+          14,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          11,
+          21,
+          0,
+          10,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          104,
+          0,
+          4,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          23,
+          0,
+          70,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          5,
+          0,
+          1,
+          0
+        ]
+      ]
+    },
+    "latency_ms": {
+      "mean": 6.620534665416926,
+      "p50": 4.928399925120175,
+      "p95": 14.430399984121323,
+      "min": 2.448700019158423,
+      "max": 63.50650009699166,
+      "n": 300
+    }
+  },
+  "transformer": {
+    "metrics": {
+      "n_samples": 300,
+      "labels": [
+        "anger",
+        "disgust",
+        "fear",
+        "joy",
+        "neutral",
+        "sadness",
+        "surprise"
+      ],
+      "accuracy": 0.93,
+      "precision_macro": 0.6285671418212423,
+      "recall_macro": 0.6344007055412586,
+      "f1_macro": 0.6312842381234463,
+      "f1_weighted": 0.930473098191441,
+      "classification_report": {
+        "anger": {
+          "precision": 0.9183673469387755,
+          "recall": 0.9375,
+          "f1-score": 0.9278350515463918,
+          "support": 48.0
+        },
+        "disgust": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "fear": {
+          "precision": 0.851063829787234,
+          "recall": 0.9090909090909091,
+          "f1-score": 0.8791208791208791,
+          "support": 44.0
+        },
+        "joy": {
+          "precision": 0.9807692307692307,
+          "recall": 0.9444444444444444,
+          "f1-score": 0.9622641509433962,
+          "support": 108.0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 0.0
+        },
+        "sadness": {
+          "precision": 0.9354838709677419,
+          "recall": 0.9354838709677419,
+          "f1-score": 0.9354838709677419,
+          "support": 93.0
+        },
+        "surprise": {
+          "precision": 0.7142857142857143,
+          "recall": 0.7142857142857143,
+          "f1-score": 0.7142857142857143,
+          "support": 7.0
+        },
+        "accuracy": 0.93,
+        "macro avg": {
+          "precision": 0.6285671418212423,
+          "recall": 0.6344007055412586,
+          "f1-score": 0.6312842381234463,
+          "support": 300.0
+        },
+        "weighted avg": {
+          "precision": 0.9315050602892548,
+          "recall": 0.93,
+          "f1-score": 0.930473098191441,
+          "support": 300.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          45,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          40,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          102,
+          0,
+          4,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          4,
+          1,
+          0,
+          87,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          5
+        ]
+      ]
+    },
+    "latency_ms": {
+      "mean": 259.4532333333334,
+      "p50": 208.9,
+      "p95": 539.18,
+      "min": 84.32,
+      "max": 1735.96,
+      "n": 300
+    }
+  }
+}

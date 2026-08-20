@@ -1,0 +1,18 @@
+.env
+.env.*
+!.env.example
+
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Model weights / caches (downloaded at runtime, not committed)
+models_cache/
+trained_models/
+*.bin
+*.safetensors

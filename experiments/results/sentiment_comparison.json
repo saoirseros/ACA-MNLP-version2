@@ -1,0 +1,127 @@
+{
+  "task": "sentiment",
+  "n_train": 2000,
+  "n_test": 300,
+  "labels": [
+    "negative",
+    "positive"
+  ],
+  "baseline": {
+    "metrics": {
+      "n_samples": 300,
+      "labels": [
+        "negative",
+        "positive"
+      ],
+      "accuracy": 0.7033333333333334,
+      "precision_macro": 0.7239583333333333,
+      "recall_macro": 0.6953587813460425,
+      "f1_macro": 0.6905388333198113,
+      "f1_weighted": 0.6934752759458656,
+      "classification_report": {
+        "negative": {
+          "precision": 0.78125,
+          "recall": 0.5244755244755245,
+          "f1-score": 0.6276150627615062,
+          "support": 143.0
+        },
+        "positive": {
+          "precision": 0.6666666666666666,
+          "recall": 0.8662420382165605,
+          "f1-score": 0.7534626038781164,
+          "support": 157.0
+        },
+        "accuracy": 0.7033333333333334,
+        "macro avg": {
+          "precision": 0.7239583333333333,
+          "recall": 0.6953587813460425,
+          "f1-score": 0.6905388333198113,
+          "support": 300.0
+        },
+        "weighted avg": {
+          "precision": 0.7212847222222222,
+          "recall": 0.7033333333333334,
+          "f1-score": 0.6934752759458656,
+          "support": 300.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          75,
+          68
+        ],
+        [
+          21,
+          136
+        ]
+      ]
+    },
+    "latency_ms": {
+      "mean": 2.8142876682492592,
+      "p50": 2.7479000855237246,
+      "p95": 4.290100070647895,
+      "min": 1.4033999759703875,
+      "max": 6.934999953955412,
+      "n": 300
+    }
+  },
+  "transformer": {
+    "metrics": {
+      "n_samples": 300,
+      "labels": [
+        "negative",
+        "positive"
+      ],
+      "accuracy": 0.9133333333333333,
+      "precision_macro": 0.9144238950338095,
+      "recall_macro": 0.9122088102979823,
+      "f1_macro": 0.9129464285714286,
+      "f1_weighted": 0.9132172619047619,
+      "classification_report": {
+        "negative": {
+          "precision": 0.927007299270073,
+          "recall": 0.8881118881118881,
+          "f1-score": 0.9071428571428571,
+          "support": 143.0
+        },
+        "positive": {
+          "precision": 0.901840490797546,
+          "recall": 0.9363057324840764,
+          "f1-score": 0.91875,
+          "support": 157.0
+        },
+        "accuracy": 0.9133333333333333,
+        "macro avg": {
+          "precision": 0.9144238950338095,
+          "recall": 0.9122088102979823,
+          "f1-score": 0.9129464285714286,
+          "support": 300.0
+        },
+        "weighted avg": {
+          "precision": 0.913836669502784,
+          "recall": 0.9133333333333333,
+          "f1-score": 0.9132172619047619,
+          "support": 300.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          127,
+          16
+        ],
+        [
+          10,
+          147
+        ]
+      ]
+    },
+    "latency_ms": {
+      "mean": 217.23180000000002,
+      "p50": 186.66,
+      "p95": 364.2,
+      "min": 78.77,
+      "max": 1489.79,
+      "n": 300
+    }
+  }
+}

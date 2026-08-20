@@ -1,0 +1,30 @@
+# Phase 3: minimal FastAPI service skeleton.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+python-dotenv==1.0.1
+
+# Phase 4: first real NLP pipeline (sentiment). CPU-only Torch install is
+# recommended to keep the download small on machines without a GPU:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch==2.5.1
+transformers==4.47.1
+
+# Phase 5: emotion, toxicity (Transformer classifiers, use torch/transformers
+# above), summarization (also Transformer-based), and topic extraction
+# (classic TF-IDF baseline, no Transformer needed).
+scikit-learn==1.6.0
+
+# Phase 6: Adaptive Context Activation - a small sentence-embedding model
+# is used to measure semantic similarity between the current message and
+# recent conversation history (all-MiniLM-L6-v2 is ~90MB, CPU-friendly).
+sentence-transformers==3.3.1
+
+# Phase 9: experiment/evaluation framework - loads real public datasets
+# and generates comparison charts. Not needed by the live service itself.
+datasets==3.2.0
+matplotlib==3.10.0
+
+# Phase 9: training/ fine-tuning scaffold - required by Hugging Face's
+# Trainer API. Not needed by the live service itself.
+accelerate==1.2.1

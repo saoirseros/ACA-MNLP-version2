@@ -2,6 +2,7 @@ import Message from "../models/Message.js";
 import User from "../models/User.js";
 import cloudinary from "../lib/cloudinary.js"
 import { io, userSocketMap } from "../server.js";
+import { analyzeMessageAsync } from "../services/messageAnalysisService.js";
 
 
 // Get all users except the logged in user
@@ -68,6 +69,10 @@ export const sendMessage = async (req, res) =>{
         const receiverId = req.params.id;
         const senderId = req.user._id;
 
+        if (!text && !image){
+            return res.json({success: false, message: "Message text or image is required"});
+        }
+
         let imageUrl;
         if(image){
             const uploadResponse = await cloudinary.uploader.upload(image)
@@ -87,6 +92,11 @@ export const sendMessage = async (req, res) =>{
         }
 
         res.json({success: true, newMessage});
+
+        // Fire-and-forget: NLP analysis runs in the background and pushes
+        // its result via Socket.io later. It must never delay or fail the
+        // chat response above.
+        analyzeMessageAsync(newMessage);
 
     } catch (error) {
         console.log(error.message);

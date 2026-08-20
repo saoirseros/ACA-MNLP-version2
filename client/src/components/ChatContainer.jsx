@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'
 const ChatContainer = () => {
 
     const { messages, selectedUser, setSelectedUser, sendMessage, 
-        getMessages} = useContext(ChatContext)
+        getMessages, messageAnalyses, getConversationAnalytics, nlpAvailable} = useContext(ChatContext)
 
     const { authUser, onlineUsers } = useContext(AuthContext)
 
@@ -43,6 +43,7 @@ const ChatContainer = () => {
     useEffect(()=>{
         if(selectedUser){
             getMessages(selectedUser._id)
+            getConversationAnalytics(selectedUser._id)
         }
     },[selectedUser])
 
@@ -64,21 +65,58 @@ const ChatContainer = () => {
         <img onClick={()=> setSelectedUser(null)} src={assets.arrow_icon} alt="" className='md:hidden max-w-7'/>
         <img src={assets.help_icon} alt="" className='max-md:hidden max-w-5'/>
       </div>
+      {nlpAvailable === false && (
+        <div className='mx-4 mt-2 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-200'>
+          NLP analysis is currently unavailable. Messages will still be delivered normally.
+        </div>
+      )}
       {/* ------- chat area ------- */}
       <div className='flex flex-col h-[calc(100%-120px)] overflow-y-scroll p-3 pb-6'>
-        {messages.map((msg, index)=>(
+        {messages.map((msg, index)=>{
+            const analysis = messageAnalyses[msg._id];
+            return (
             <div key={index} className={`flex items-end gap-2 justify-end ${msg.senderId !== authUser._id && 'flex-row-reverse'}`}>
                 {msg.image ? (
                     <img src={msg.image} alt="" className='max-w-[230px] border border-gray-700 rounded-lg overflow-hidden mb-8'/>
                 ):(
-                    <p className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${msg.senderId === authUser._id ? 'rounded-br-none' : 'rounded-bl-none'}`}>{msg.text}</p>
+                    <div className={`flex flex-col mb-8 max-w-[200px] ${msg.senderId === authUser._id ? 'items-end' : 'items-start'}`}>
+                        <p className={`p-2 md:text-sm font-light rounded-lg break-all bg-violet-500/30 text-white ${msg.senderId === authUser._id ? 'rounded-br-none' : 'rounded-bl-none'}`}>{msg.text}</p>
+                        {analysis && (
+                            <div className='flex flex-wrap gap-1 mt-1 justify-end'>
+                                {analysis.sentiment && (
+                                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${analysis.sentiment.label === 'positive' ? 'bg-green-600/40 text-green-200' : 'bg-red-600/40 text-red-200'}`}>
+                                        {analysis.sentiment.label} ({Math.round(analysis.sentiment.confidence * 100)}%)
+                                    </span>
+                                )}
+                                {analysis.emotion && (
+                                    <span className='text-[10px] px-2 py-0.5 rounded-full bg-indigo-600/40 text-indigo-200'>
+                                        {analysis.emotion.label}
+                                    </span>
+                                )}
+                                {analysis.toxicity?.label === 'toxic' && (
+                                    <span className='text-[10px] px-2 py-0.5 rounded-full bg-red-700/60 text-red-100'>
+                                        ⚠ toxic{analysis.toxicity.category ? ` · ${analysis.toxicity.category}` : ''}
+                                    </span>
+                                )}
+                                {analysis.contextLevel && (
+                                    <span
+                                        className='text-[10px] px-2 py-0.5 rounded-full bg-gray-600/40 text-gray-300'
+                                        title={`Adaptive Context Activation: ${analysis.selectedContextMessages ?? 0} prior message(s) used`}
+                                    >
+                                        ctx: {analysis.contextLevel}{analysis.selectedContextMessages ? ` (${analysis.selectedContextMessages})` : ''}
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 )}
                 <div className="text-center text-xs">
                     <img src={msg.senderId === authUser._id ? authUser?.profilePic || assets.avatar_icon : selectedUser?.profilePic || assets.avatar_icon} alt="" className='w-7 rounded-full' />
                     <p className='text-gray-500'>{formatMessageTime(msg.createdAt)}</p>
                 </div>
             </div>
-        ))}
+            )
+        })}
         <div ref={scrollEnd}></div>
       </div>
 
