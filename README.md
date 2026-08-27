@@ -33,6 +33,11 @@ Rather than functioning as a conventional chat application, the platform serves 
 
 # Getting Started
 
+> 📖 For a detailed, step-by-step walkthrough (prerequisites, first-run
+> checklist, running tests, troubleshooting), see **[RUNNING.md](RUNNING.md)**.
+> The quick version below assumes you already have Node, Python, and
+> MongoDB installed.
+
 The application has four local processes: MongoDB, the Node/Express server,
 the Python NLP service, and the Vite client. Start them in that order.
 
@@ -312,7 +317,8 @@ This project proposes a unified architecture capable of integrating multiple NLP
 │   ├── README.md            # how to reproduce
 │   └── FINDINGS.md          # research-paper-style write-up of results
 │
-└── README.md
+├── README.md
+└── RUNNING.md              # detailed step-by-step setup/run/troubleshooting guide
 ```
 
 ---
