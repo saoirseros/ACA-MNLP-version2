@@ -27,3 +27,7 @@ dist-ssr
 .env.*
 !.env.example
 node_modules/
+
+
+ShrutiResearchPaper.docx
+ShrutiResearchPaper_v2_VisualAnalytics.docx

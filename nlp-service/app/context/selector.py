@@ -22,6 +22,26 @@ SIMILARITY_WEIGHT = 0.7
 RECENCY_WEIGHT = 0.3
 
 
+def _rank_candidates(history: List[str], similarities: List[float]) -> List[dict]:
+    """Score every history message by the same similarity+recency blend,
+    in original chronological order (index 0 = oldest considered)."""
+    n = len(history)
+    ranked = []
+    for index, similarity in enumerate(similarities):
+        # More recent messages (higher index, since history is oldest-first)
+        # get a higher recency score.
+        recency = (index + 1) / n
+        combined = SIMILARITY_WEIGHT * similarity + RECENCY_WEIGHT * recency
+        ranked.append({
+            "index": index,
+            "text": history[index],
+            "similarity": similarity,
+            "recency": recency,
+            "combinedScore": combined,
+        })
+    return ranked
+
+
 def select_context_messages(history: List[str], similarities: List[float], level: str) -> List[str]:
     """
     Rank `history` messages by a blend of semantic similarity to the
@@ -36,16 +56,28 @@ def select_context_messages(history: List[str], similarities: List[float], level
     if limit == 0 or not history:
         return []
 
-    n = len(history)
-    ranked: List[Tuple[int, float]] = []
-    for index, similarity in enumerate(similarities):
-        # More recent messages (higher index, since history is oldest-first)
-        # get a higher recency score.
-        recency = (index + 1) / n
-        combined = SIMILARITY_WEIGHT * similarity + RECENCY_WEIGHT * recency
-        ranked.append((index, combined))
-
-    ranked.sort(key=lambda pair: pair[1], reverse=True)
-    top_indices = sorted(index for index, _ in ranked[:limit])  # restore chronological order
+    ranked = sorted(_rank_candidates(history, similarities), key=lambda c: c["combinedScore"], reverse=True)
+    top_indices = sorted(c["index"] for c in ranked[:limit])  # restore chronological order
 
     return [history[i] for i in top_indices]
+
+
+def describe_context_candidates(history: List[str], similarities: List[float], level: str) -> List[dict]:
+    """
+    Full explainability view of every history message considered: its
+    similarity, recency, combined ranking score, and whether it was
+    ultimately selected - in chronological order. This is what powers the
+    Algorithm Showcase's step-by-step visualization, and is built from
+    the exact same ranking `select_context_messages` uses (not a
+    reimplementation), so it can never drift from the real decision.
+    """
+    if not history:
+        return []
+
+    limit = MAX_MESSAGES_BY_LEVEL.get(level, 0)
+    ranked = _rank_candidates(history, similarities)
+    ranked_by_score = sorted(ranked, key=lambda c: c["combinedScore"], reverse=True)
+    selected_indices = {c["index"] for c in ranked_by_score[:limit]} if limit else set()
+
+    return [{**candidate, "selected": candidate["index"] in selected_indices} for candidate in ranked]
+

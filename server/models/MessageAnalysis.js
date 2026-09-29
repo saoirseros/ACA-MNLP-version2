@@ -30,6 +30,14 @@ const messageAnalysisSchema = new mongoose.Schema({
     contextLevel: { type: String, enum: ["low", "medium", "high"], default: "low" },
     contextScore: { type: Number },
     selectedContextMessages: { type: Number, default: 0 },
+    // Which tier of the model cascade (Phase 10) actually analyzed this
+    // message: "lightweight" (fast TF-IDF baseline, no context needed) or
+    // "heavyweight" (full Transformers, context-dependent message).
+    modelTier: { type: String, enum: ["lightweight", "heavyweight"], default: "heavyweight" },
+    // Full explainability trace (signals, weights, candidate history,
+    // effective text, models used) - powers the Algorithm Showcase and
+    // per-message inline UI. Stored as-is from the NLP service.
+    trace: { type: mongoose.Schema.Types.Mixed },
     // Per-module model name + latency, e.g. { sentiment: {...}, emotion: {...}, toxicity: {...} }
     processing: { type: mongoose.Schema.Types.Mixed },
     totalLatencyMs: { type: Number },

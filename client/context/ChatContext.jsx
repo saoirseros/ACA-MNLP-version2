@@ -76,6 +76,22 @@ export const ChatProvider = ({ children })=>{
         }, 1000)
     }
 
+    // Runs the real Adaptive Context Activation + model-tier cascade
+    // pipeline on an arbitrary (text, history) pair, without persisting
+    // anything - powers the Algorithm Showcase. Returns null (never
+    // throws) if the NLP service is unavailable.
+    const simulateMessage = async (text, history = []) => {
+        try {
+            const { data } = await axios.post("/api/nlp/simulate", { text, history });
+            if (data.success) return data.result;
+            console.log(data.message);
+            return null;
+        } catch (error) {
+            console.log(error.message);
+            return null;
+        }
+    }
+
     // function to send message to selected user
     const sendMessage = async (messageData)=>{
         try {
@@ -169,7 +185,7 @@ export const ChatProvider = ({ children })=>{
     },[])
 
     const value = {
-        messages, users, selectedUser, getUsers, getMessages, sendMessage, setSelectedUser, unseenMessages, setUnseenMessages, messageAnalyses, conversationAnalytics, getConversationAnalytics, nlpAvailable
+        messages, users, selectedUser, getUsers, getMessages, sendMessage, setSelectedUser, unseenMessages, setUnseenMessages, messageAnalyses, conversationAnalytics, getConversationAnalytics, nlpAvailable, simulateMessage
     }
 
     return (

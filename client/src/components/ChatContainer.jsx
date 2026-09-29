@@ -106,6 +106,14 @@ const ChatContainer = () => {
                                         ctx: {analysis.contextLevel}{analysis.selectedContextMessages ? ` (${analysis.selectedContextMessages})` : ''}
                                     </span>
                                 )}
+                                {analysis.modelTier && (
+                                    <span
+                                        className={`text-[10px] px-2 py-0.5 rounded-full ${analysis.modelTier === 'lightweight' ? 'bg-emerald-600/40 text-emerald-200' : 'bg-indigo-600/40 text-indigo-200'}`}
+                                        title={analysis.trace?.tierReason || `Analyzed by the ${analysis.modelTier} model`}
+                                    >
+                                        {analysis.modelTier === 'lightweight' ? '⚡ lightweight' : '🧠 heavyweight'}
+                                    </span>
+                                )}
                             </div>
                         )}
                     </div>

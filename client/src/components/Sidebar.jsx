@@ -3,6 +3,7 @@ import assets from '../assets/assets'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { ChatContext } from '../../context/ChatContext';
+import AlgorithmShowcase from './AlgorithmShowcase';
 
 const Sidebar = () => {
 
@@ -12,6 +13,7 @@ const Sidebar = () => {
     const {logout, onlineUsers} = useContext(AuthContext)
 
     const [input, setInput] = useState(false)
+    const [showAlgorithmShowcase, setShowAlgorithmShowcase] = useState(false)
 
     const navigate = useNavigate();
 
@@ -41,6 +43,16 @@ const Sidebar = () => {
             <input onChange={(e)=>setInput(e.target.value)} type="text" className='bg-transparent border-none outline-none text-white text-xs placeholder-[#c8c8c8] flex-1' placeholder='Search User...'/>
         </div>
 
+        {/* Entry point for the Algorithm Showcase: visualizes how Adaptive
+            Context Activation routes a message to the lightweight or
+            heavyweight model, with real example workflows. */}
+        <button
+            onClick={()=> setShowAlgorithmShowcase(true)}
+            className='w-full mt-3 flex items-center justify-center gap-2 bg-[#282142] hover:bg-[#332a5c] rounded-full py-2.5 text-xs transition'
+        >
+            🧭 Algorithm Showcase
+        </button>
+
       </div>
 
     <div className='flex flex-col'>
@@ -60,6 +72,8 @@ const Sidebar = () => {
             </div>
         ) )}
     </div>
+
+    {showAlgorithmShowcase && <AlgorithmShowcase onClose={()=> setShowAlgorithmShowcase(false)} />}
 
     </div>
   )

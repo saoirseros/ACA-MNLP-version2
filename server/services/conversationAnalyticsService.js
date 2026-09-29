@@ -83,9 +83,16 @@ export const getConversationAnalytics = async (myId, otherUserId) => {
     const totalLatencies = analyses.map((a) => a.totalLatencyMs).filter((v) => typeof v === "number");
 
     const contextLevelCounts = { low: 0, medium: 0, high: 0 };
+    const modelTierCounts = { lightweight: 0, heavyweight: 0 };
+    const latenciesByTier = { lightweight: [], heavyweight: [] };
     analyses.forEach((a) => {
         if (a.contextLevel && contextLevelCounts[a.contextLevel] !== undefined) {
             contextLevelCounts[a.contextLevel] += 1;
+        }
+        const tier = a.modelTier === "lightweight" ? "lightweight" : "heavyweight";
+        modelTierCounts[tier] += 1;
+        if (typeof a.totalLatencyMs === "number") {
+            latenciesByTier[tier].push(a.totalLatencyMs);
         }
     });
     const contextScores = analyses.map((a) => a.contextScore).filter((v) => typeof v === "number");
@@ -148,6 +155,17 @@ export const getConversationAnalytics = async (myId, otherUserId) => {
             levelCounts: contextLevelCounts,
             averageScore: average(contextScores),
             averageSelectedMessages: average(selectedContextCounts),
+        },
+        // Model-tier cascade (Phase 10) breakdown: how many messages were
+        // handled by the fast lightweight baseline vs. the heavyweight
+        // Transformers, and the measured latency difference between them -
+        // real, live evidence of the cascade's compute savings.
+        modelRouting: {
+            tierCounts: modelTierCounts,
+            averageLatencyMsByTier: {
+                lightweight: average(latenciesByTier.lightweight),
+                heavyweight: average(latenciesByTier.heavyweight),
+            },
         },
         processing: {
             averageTotalLatencyMs: average(totalLatencies),

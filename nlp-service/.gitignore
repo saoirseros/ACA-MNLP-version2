@@ -16,3 +16,8 @@ models_cache/
 trained_models/
 *.bin
 *.safetensors
+
+# Lightweight baseline models are trained on first use and cached here
+# (see app/models/baseline/_train.py) - regenerable, not source.
+app/models/baseline/_artifacts/
+*.joblib

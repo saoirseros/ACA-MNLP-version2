@@ -21,7 +21,9 @@ scikit-learn==1.6.0
 sentence-transformers==3.3.1
 
 # Phase 9: experiment/evaluation framework - loads real public datasets
-# and generates comparison charts. Not needed by the live service itself.
+# and generates comparison charts. Also used by the live service's
+# lightweight baseline models (app/models/baseline/) to train/reload the
+# same TF-IDF + Logistic Regression cascade tier evaluated in the paper.
 datasets==3.2.0
 matplotlib==3.10.0
 

@@ -56,6 +56,45 @@ class AnalyzeMessageRequest(BaseModel):
     history: list[str] = Field(default_factory=list)
 
 
+class SignalBreakdown(BaseModel):
+    """One ACA signal's raw value, its weight, and its contribution to the
+    final context score (value * weight) - the building blocks the
+    Algorithm Showcase renders as boxes/arrows."""
+    name: str
+    value: float
+    weight: float
+    contribution: float
+
+
+class CandidateHistoryItem(BaseModel):
+    """One prior conversation message considered as context, with its
+    similarity/recency ranking and whether ACA ultimately selected it."""
+    text: str
+    similarity: float
+    recency: float
+    combinedScore: float
+    selected: bool
+
+
+class AnalysisTrace(BaseModel):
+    """
+    Full, real (never mocked) explainability trace of one message's trip
+    through Adaptive Context Activation and the model-tier cascade -
+    every number here is exactly what the pipeline actually computed for
+    this message, not a canned example. Powers both the per-message
+    inline UI and the Algorithm Showcase's step-by-step visualization.
+    """
+    signals: list[SignalBreakdown]
+    thresholds: dict[str, float]
+    contextScore: float
+    contextLevel: str
+    candidateHistory: list[CandidateHistoryItem]
+    effectiveText: str
+    modelTier: str
+    tierReason: str
+    modelsUsed: dict[str, str]
+
+
 class AnalyzeMessageResponse(BaseModel):
     """Runs every currently available NLP module on one message in a single call."""
     sentiment: SentimentResult
@@ -67,3 +106,7 @@ class AnalyzeMessageResponse(BaseModel):
     contextLevel: str
     contextScore: float
     selectedContextMessages: int
+    # "lightweight" (TF-IDF+LogReg baseline) or "heavyweight" (Transformers)
+    # - which tier of the model cascade actually analyzed this message.
+    modelTier: str
+    trace: AnalysisTrace

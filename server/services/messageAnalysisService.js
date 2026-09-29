@@ -58,6 +58,8 @@ export const analyzeMessageAsync = async (message) => {
                 contextLevel: result.contextLevel,
                 contextScore: result.contextScore,
                 selectedContextMessages: result.selectedContextMessages,
+                modelTier: result.modelTier,
+                trace: result.trace,
                 status: "completed",
             },
             { upsert: true, new: true }
@@ -74,6 +76,8 @@ export const analyzeMessageAsync = async (message) => {
             contextLevel: analysis.contextLevel,
             contextScore: analysis.contextScore,
             selectedContextMessages: analysis.selectedContextMessages,
+            modelTier: analysis.modelTier,
+            trace: analysis.trace,
         };
 
         // Notify both participants so either side of the chat sees the

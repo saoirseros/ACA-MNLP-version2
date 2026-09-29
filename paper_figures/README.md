@@ -15,6 +15,18 @@ rather than an idealized, invented, or "projected" one.
 | `figure6_context_predictive_quality.png` | Fig. 6 — full-context vs. adaptive-context accuracy/F1 | copied from `experiments/results/context_metric_comparison.png` | `experiments/results/context_experiment_comparison.json` |
 | `figure7_context_efficiency.png` | Fig. 7 — full-context vs. adaptive-context size and latency | `make_results_figures.py` | `experiments/results/context_experiment_comparison.json` |
 | `figure8_context_confusion_matrices.png` | Fig. 8 — confusion matrices, full-context vs. adaptive-context | `make_results_figures.py` | `experiments/results/context_experiment_comparison.json` |
+| `figure9_proposed_dashboard.png` | Fig. 9 — proposed Analytics Dashboard (right-sidebar extension) | `make_figure9.py` | `client/src/components/RightSidebar.jsx` (existing profile/bio/media/Conversation-Intelligence block) + proposed design |
+| `figure10_proposed_algorithm_showcase.png` | Fig. 10 — proposed Algorithm Showcase (left-sidebar extension) | `make_figure10.py` | `client/src/components/Sidebar.jsx` and `nlp-service/app/context/` (real ACA pipeline of Fig. 2) + proposed design |
+
+Figures 9 and 10 are **design mockups for a proposed, not-yet-implemented
+interface extension**, used in `ShrutiResearchPaper_v2_VisualAnalytics.docx`
+(see that file's "Proposed Extension" subsection). They are drawn in the
+same box/arrow/mockup vocabulary as Figures 1 and 2 and deliberately reuse
+real, already-implemented details (the actual profile/bio/media layout, the
+actual ACA signals and thresholds of Fig. 2, and the actual result-pill
+styling from `ChatContainer.jsx`) so the mockups stay grounded in the real
+system rather than depicting an invented one. Unlike Figures 1-8, they do
+not represent measured or implemented behavior.
 
 ## Regenerating
 
@@ -27,6 +39,8 @@ cd paper_figures
 C:\nlp-venvs\ptp-nlp-service\Scripts\python.exe make_figure1.py
 C:\nlp-venvs\ptp-nlp-service\Scripts\python.exe make_figure2.py
 C:\nlp-venvs\ptp-nlp-service\Scripts\python.exe make_results_figures.py
+C:\nlp-venvs\ptp-nlp-service\Scripts\python.exe make_figure9.py
+C:\nlp-venvs\ptp-nlp-service\Scripts\python.exe make_figure10.py
 ```
 
 `make_results_figures.py` reads its numbers directly from
